@@ -1,6 +1,6 @@
 # CMS-HCC V22 to V28 Risk Transition Simulator
 
-A Microsoft Fabric analytical workflow for comparing CMS-HCC V22 and V28 risk scores using CMS DE-SynPUF sample claims data. The project moves source records through Bronze, Silver, and Gold layers, produces a member-level V22/V28 comparison, and evaluates a model that estimates the standardized V28 score from V22-era features.
+An end-to-end Microsoft Fabric healthcare-analytics project that compares CMS-HCC V22 and V28 standardized risk scores using CMS DE-SynPUF sample claims data. It implements Bronze, Silver, and Gold layers, creates a member-level transition view, and evaluates how accurately V28 scores can be estimated from V22-era features.
 
 > **Data boundary:** This repository contains code, a logical pipeline template, table definitions, and aggregate evaluation results only. It contains no source records, member identifiers, mapping files, credentials, Fabric workspace identifiers, or saved notebook outputs.
 
@@ -14,6 +14,22 @@ A Microsoft Fabric analytical workflow for comparing CMS-HCC V22 and V28 risk sc
 | `docs/data-lineage.md` | Bronze → Silver → Gold lineage and source-data boundary |
 | `docs/ml-evaluation.md` | Saved aggregate evaluation evidence and limitations |
 | `docs/architecture.md` | Publication and data-handling boundaries |
+
+## Why this project matters
+
+Changes between HCC model versions can alter comparative member risk profiles and the analytical reports built on them. This project creates a traceable way to compare the two versions, quantify score transitions, and test whether V22-era characteristics can estimate the standardized V28 score. It is an analytical comparison—not an official CMS payment calculation or coding recommendation.
+
+## Objective
+
+1. Ingest approved beneficiary, inpatient, outpatient, GEM, and HCC reference inputs.
+2. Standardize diagnosis evidence and map ICD-9 to ICD-10.
+3. Apply V22 and V28 HCC mappings to create comparable member-risk features.
+4. Publish a reporting-ready dimensional model for risk and HCC assignments.
+5. Train and independently evaluate a V28 score-estimation model using member-isolated splits.
+
+## Dataset and features
+
+The workflow uses CMS DE-SynPUF sample claims data and versioned reference mappings; raw source files are excluded from Git. The final analytical dataset contained **116,352 member records**. Seven model inputs were used: age, sex indicators, chronic-condition count, V22 HCC counts, and standardized V22 risk score. The split was member-isolated so a member could not appear in more than one of train, validation, or test data.
 
 ## Workflow
 
