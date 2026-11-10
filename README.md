@@ -47,7 +47,25 @@ These are historical notebook outputs, not a claim of production performance. Se
 
 ## Visualizations and how to read them
 
-The visualizations are generated when `04_hcc_risk_ml_analysis.ipynb` runs in an approved Fabric environment. Images are deliberately not committed because the published notebook has no saved outputs and the source data is excluded.
+The three charts below are the HCC figures from the supplied presentation document. They contain aggregate metrics or de-identified score plots only; no member identifiers, raw records, or notebook outputs are published. The notebook can regenerate the full diagnostic set in an approved Fabric environment.
+
+### Model selection
+
+![Validation RMSE comparison](docs/images/validation-rmse-comparison.png)
+
+XGBoost had the lowest validation RMSE (**0.6775**), narrowly outperforming linear regression (**0.6847**) and random forest (**0.7017**). Since lower RMSE means fewer large score-estimation errors, this chart provides the model-selection evidence.
+
+### Held-out score agreement
+
+![Actual versus predicted V28 risk scores](docs/images/actual-vs-predicted-v28-score.png)
+
+The dashed diagonal is perfect prediction. Most plotted observations follow that diagonal, consistent with the held-out test **R² of 0.9085**. Points farther from the line represent larger individual score-estimation errors. The chart uses a display sample; the metrics use all 17,288 held-out test rows.
+
+### Transition-cohort limitation
+
+![Cohort MAE comparison](docs/images/cohort-mae-comparison.png)
+
+This diagnostic prevents the aggregate score from hiding uneven performance. XGBoost improves MAE for large positive transitions (**1.47 vs 1.91** for the V22 baseline), but is worse for large negative transitions (**1.70 vs 1.46**). This limitation is documented explicitly: strong overall performance does not make every transition type equally reliable.
 
 | Visualization | What it shows | How to interpret it |
 | --- | --- | --- |
