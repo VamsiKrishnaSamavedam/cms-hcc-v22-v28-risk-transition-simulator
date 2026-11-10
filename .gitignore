@@ -1,0 +1,28 @@
+# Python and notebook artifacts
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Local configuration and credentials
+.env
+.env.*
+*.key
+*.pem
+secrets/
+
+# Data and model artifacts
+data/
+artifacts/
+models/
+*.csv
+*.parquet
+*.delta
+*.pkl
+*.joblib
+
+# Fabric and editor-local files
+lakehouse/
+workspace/
+.vscode/
+.idea/
