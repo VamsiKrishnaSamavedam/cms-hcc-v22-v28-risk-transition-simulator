@@ -1,5 +1,14 @@
 # Runtime requirements
 
-No source execution environment or dependency manifest was provided. The proposed target is Microsoft Fabric Spark with PySpark and Delta Lake available in the managed runtime.
+The supplied notebooks were authored for a Microsoft Fabric Spark environment. Use the workspace-managed versions of the following unless your governed environment requires pinned versions:
 
-Before execution, record the Fabric runtime version and any package versions installed by the project. Do not add package pins until they have been tested with the supplied notebook or pipeline.
+- PySpark and Delta Lake
+- pandas
+- NumPy
+- Matplotlib
+- scikit-learn
+- XGBoost
+- `hccpy`
+
+Record the Fabric runtime and package versions used for a reproducible run. No package versions are pinned here because the source notebooks did not include a tested dependency manifest.
+
