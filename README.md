@@ -33,9 +33,40 @@ flowchart LR
 
 ## Model evidence captured from the supplied notebook
 
-The notebook's member-isolated held-out test set had **17,288** rows. Its selected XGBoost model reported **R² 0.9085**, **MAE 0.3269**, and **RMSE 0.6925** when estimating the standardized V28 score. The notebook compared this with a V22-score baseline of RMSE **0.7207**, a reported **3.90%** RMSE reduction.
+The notebook uses a member-isolated train/validation/test split: 81,387 training rows, 17,677 validation rows, and 17,288 held-out test rows. XGBoost was selected by validation RMSE.
+
+| Evaluation stage | Model | MAE | RMSE | R² |
+| --- | --- | ---: | ---: | ---: |
+| Validation | XGBoost | 0.3249 | 0.6775 | 0.9087 |
+| Held-out test | XGBoost V2 | 0.3269 | 0.6925 | 0.9085 |
+| Held-out test | V22 score baseline | 0.3465 | 0.7207 | 0.9009 |
+
+On the held-out test population, XGBoost reduced RMSE by **3.90%** versus directly using the V22 score. It achieved **64.61% transition-direction accuracy** using the notebook's neutral band, and used a **0.9900** score-change threshold to identify large transitions.
 
 These are historical notebook outputs, not a claim of production performance. See [docs/ml-evaluation.md](docs/ml-evaluation.md) for the complete aggregate evidence and important limitations.
+
+## Visualizations and how to read them
+
+The visualizations are generated when `04_hcc_risk_ml_analysis.ipynb` runs in an approved Fabric environment. Images are deliberately not committed because the published notebook has no saved outputs and the source data is excluded.
+
+| Visualization | What it shows | How to interpret it |
+| --- | --- | --- |
+| Validation RMSE comparison | RMSE for XGBoost, linear regression, and random forest during model selection | Lower bars are better. This is the primary selection chart; it supports selecting XGBoost using validation data only. |
+| Validation R² comparison | Variance explained by each candidate on validation data | Higher bars are better. Use it alongside RMSE rather than as the sole selection measure. |
+| Test RMSE: XGBoost vs V22 baseline | Independent test error of the selected model compared with the unadjusted V22 score | Lower XGBoost RMSE shows incremental predictive value beyond carrying forward the V22 score. The chart annotates the 3.90% reduction. |
+| Actual vs predicted V28 score | A sampled scatterplot of up to 3,000 held-out members against the perfect-prediction diagonal | Points closer to the diagonal have smaller error. Sampling improves legibility; reported metrics always use all 17,288 test rows. |
+| Residual distribution | Histogram of `actual V28 − predicted V28` | A distribution centered near zero indicates limited average bias; its spread and tails show how large errors can become. |
+| Feature importance | Relative XGBoost feature importance for the seven supplied inputs | Identifies inputs used most by this model. It is not a causal explanation and should not be treated as clinical importance. |
+| Actual vs predicted mean transition | Mean V22→V28 change across large-negative, large-positive, and other transition cohorts | Shows whether the estimated transition direction and magnitude track observed cohort-level changes. |
+| Cohort MAE comparison | XGBoost versus V22-baseline error by transition cohort | Identifies where the model adds value or underperforms. The supplied analysis reported better large-positive estimation but weaker large-negative estimation, so this chart is essential for responsible interpretation. |
+
+## Metric definitions
+
+- **MAE:** average absolute score error; lower is better.
+- **RMSE:** error measure that penalizes larger misses more strongly; lower is better and was the selection metric.
+- **R²:** proportion of variation explained by the estimate; higher is better.
+- **Direction accuracy:** percentage of members for whom the predicted transition class matches the actual class (decrease, stable, or increase).
+- **Cohort MAE and residuals:** diagnostic measures used to identify uneven performance across transition patterns.
 
 ## Gold model
 
