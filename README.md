@@ -17,14 +17,7 @@ A Microsoft Fabric analytical workflow for comparing CMS-HCC V22 and V28 risk sc
 
 ## Workflow
 
-\`\`\`mermaid
-flowchart LR
-    A[Approved CMS DE-SynPUF sample files and versioned references] --> B[Bronze ingestion and validation]
-    B --> C[Silver clinical transformations]
-    C --> D[Gold dimensional model]
-    D --> E[V22 to V28 risk analysis]
-    E --> F[Aggregate transition and diagnostic facts]
-\`\`\`
+**Approved CMS DE-SynPUF sample files and versioned references** → **Bronze ingestion and validation** → **Silver clinical transformations** → **Gold dimensional model** → **V22-to-V28 risk analysis** → **aggregate transition and diagnostic facts**
 
 1. **Bronze** — validate and load beneficiary, inpatient, outpatient, GEM, and HCC mapping reference files as Delta tables.
 2. **Silver** — standardize claim diagnosis evidence, map ICD-9 to ICD-10, apply V22 and V28 HCC mappings, and calculate member risk features.
