@@ -1,0 +1,27 @@
+{
+  "name": "HCC V22 to V28 Risk Transition",
+  "description": "Portable logical orchestration template. Configure notebook activities in the target Microsoft Fabric workspace.",
+  "activities": [
+    {
+      "name": "Bronze ingestion and validation",
+      "notebook": "01_bronze_ingestion_validation.ipynb",
+      "dependsOn": []
+    },
+    {
+      "name": "Silver clinical transformation",
+      "notebook": "02_silver_clinical_transformation.ipynb",
+      "dependsOn": ["Bronze ingestion and validation"]
+    },
+    {
+      "name": "Gold dimensional model",
+      "notebook": "03_gold_dimensional_model.ipynb",
+      "dependsOn": ["Silver clinical transformation"]
+    },
+    {
+      "name": "HCC risk ML analysis",
+      "notebook": "04_hcc_risk_ml_analysis.ipynb",
+      "dependsOn": ["Gold dimensional model"]
+    }
+  ]
+}
+
